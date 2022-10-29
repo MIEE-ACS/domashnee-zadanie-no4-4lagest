@@ -91,6 +91,13 @@ namespace hw4
                     }
                 }
                 Console.WriteLine("Сжатый массив:");
+                for (int i=0; i<X.Length-1; i++)
+                {
+                    if (X[i]==0)
+                    {
+                        X[i] = X[i + 1];
+                    }
+                }
                 var str2 = string.Join(" ", X);
                 Console.WriteLine(str2);
                 Console.WriteLine("Введите размер квадратной матрицы:");
@@ -110,7 +117,6 @@ namespace hw4
                     }
                     Console.WriteLine();
                 }
-                int count = 0;
                 int[] sum = new int[B];
                 int sum1 = 0;
                 int[] P = new int[A];
@@ -140,29 +146,28 @@ namespace hw4
                     }
                 }
                 Console.WriteLine($"Сумма элементов среди столбцов, не имеющих отрицательных элементов: {sum.Sum()}");
-                int[] t1 = new int[100];
-                int[] t2 = new int[100];    
-                for (int i = 0; i<A; i++)
+                int m = 30;
+                int[] sumDiag = new int[m];
+                for (int j = 0; j < A-1; ++j)
                 {
-                    for (int j=0; j<B-i;j++)
+                    for (int i = 0; i < j + 1; ++i)
                     {
-                        t1[i]=Math.Abs(matr[i+j, j]);
-                        t2[i]=Math.Abs(matr[j,i+j]);
+                        sumDiag[j] += Math.Abs(matr[i, i]);
+                    }
+                }
+                for (int j = m/2; j<m; ++j)
+                {
+                    for (int i = j - m / 2 + 1; i < A; ++i)
+                    {
+                        sumDiag[j]+=Math.Abs(matr[i, i]);
                     }
                 }
                 int Min = 9999;
-                for (int i = 1; i < A-1; i++)
-                {
-                    if ((t1[i] < Min)&&(t1[i] != 0))
-                    {
-                        Min = t1[i];
-                    }
-                }
                 for (int i = 1; i < A - 1; i++)
                 {
-                    if ((t2[i] < Min) && (t2[i] != 0))
+                    if ((sumDiag[i] < Min) && (sumDiag[i] != 0))
                     {
-                        Min = t2[i];
+                        Min = sumDiag[i];
                     }
                 }
                 Console.WriteLine($"Минимум среди сумм модулей элементов на диагоналях, параллельных главной: {Min}");
