@@ -33,6 +33,11 @@ namespace hw4
                 X[i] = r.Next(-50, 50);
             }
         }
+        public static void PrintArray(int[] X)
+        {
+            string str = string.Join(" ", X);
+            Console.WriteLine(str);
+        }
         public static int Main()
         {
             int f = 1;
@@ -44,8 +49,7 @@ namespace hw4
                 int[] X = new int[a];
                 InitArray(X);
                 Console.WriteLine("Исходный массив:");
-                var str = string.Join(" ", X);
-                Console.WriteLine(str);
+                PrintArray(X);
                 Console.WriteLine($"Максимальный элемент данного массива: {X.Max()}");
                 int IndexMax = Array.IndexOf(X, X.Max());
                 int LastPIndex = 0;
@@ -110,56 +114,58 @@ namespace hw4
                 int[] sum = new int[B];
                 int sum1 = 0;
                 int[] P = new int[A];
-                for (int i = 0; i < A; i++)
+                for (int i = 0; i < B; i++)
                 {
-                    for (int j = 0; j < B; j++)
+                    for (int j = 0; j < A; j++)
                     {
-                        sum1 += matr[i, j];
+                        sum1 += matr[j, i];
                     }
                     sum[i] = sum1;
                     sum1 = 0;
                 }
-                var str3 = string.Join(" ", sum);
-                Console.WriteLine(str3);
-                for (int i = 0; i < A; i++)
+                for (int i = 0; i < B; i++)
                 {
-                    for (int j = 0; j < B; j++)
+                    for (int j = 0; j < A; j++)
                     {
-                        P[i] = matr[i, j];
+                        P[j] = matr[j, i];
                     }
 
-                }
-                /*int[] P = new int[A];
-                bool h = false;
-                int l = 0;
-                int sum = 0;
-                while(true)
-                { 
-                    for (int i = 0; i < A; i++)
+                    for (int k = 0; k<P.Length; k++)
                     {
-                        P[i] = matr[i, l];  
-                    }
-                    for(int i = 0; i < B; i++)
-                    {
-                        if (P[i] < 0)
+                        if (P[k] < 0)
                         {
-                            h = false;
+                            sum[i] = 0;
                             break;
                         }
-                        else
-                        {
-                            h = true;
-                        }
                     }
-                    if (h==true)
-                    {
-                        break;
-                    }
-                    l++;
-                    sum = 0;
                 }
-                Console.WriteLine(l);
-                Console.WriteLine(sum);*/
+                Console.WriteLine($"Сумма элементов среди столбцов, не имеющих отрицательных элементов: {sum.Sum()}");
+                int[] t1 = new int[100];
+                int[] t2 = new int[100];    
+                for (int i = 0; i<A; i++)
+                {
+                    for (int j=0; j<B-i;j++)
+                    {
+                        t1[i]=Math.Abs(matr[i+j, j]);
+                        t2[i]=Math.Abs(matr[j,i+j]);
+                    }
+                }
+                int Min = 9999;
+                for (int i = 1; i < A-1; i++)
+                {
+                    if ((t1[i] < Min)&&(t1[i] != 0))
+                    {
+                        Min = t1[i];
+                    }
+                }
+                for (int i = 1; i < A - 1; i++)
+                {
+                    if ((t2[i] < Min) && (t2[i] != 0))
+                    {
+                        Min = t2[i];
+                    }
+                }
+                Console.WriteLine($"Минимум среди сумм модулей элементов на диагоналях, параллельных главной: {Min}");
                 Console.WriteLine("Повторить выполнение (1 - да, 0 - нет)");
                 f = Convert.ToInt32(Console.ReadLine());
             } while (f == 1);
